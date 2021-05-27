@@ -24,7 +24,7 @@ defined('MOODLE_INTERNAL') || die();
  
 $plugin->version = 2021052600;
 $plugin->requires = 2018051700;
-$plugin->supported = [35, 36, 37, 38, 39, 310, 311];   // Available as of Moodle 3.9.0 or later.
+$plugin->supported = [35, 311];   // Available as of Moodle 3.9.0 or later.
 $plugin->component = 'tool_categorytasksextender';
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->release = 'v0.1-a1';
