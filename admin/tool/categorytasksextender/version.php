@@ -19,11 +19,12 @@
  * @copyright 2021, Samuel Luciano <sa.lassis@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die;
-
-$string['pluginname'] = 'Category Tasks Extender';
-$string['backuplinktext'] = 'Backup courses from';
-$string['restorelinktext'] = 'Restore courses into';
-$string['categorytasksextender:backupcategorycourses'] = 'Create courses backups from category';
-$string['categorytasksextender:restorecoursescategory'] = 'Restore courses backups into category';
+ 
+defined('MOODLE_INTERNAL') || die();
+ 
+$plugin->version = 2021092002;
+$plugin->requires = 2018051700;
+$plugin->supported = [35, 311];   // Available as of Moodle 3.5.0 or later.
+$plugin->component = 'tool_categorytasksextender';
+$plugin->maturity = MATURITY_ALPHA;
+$plugin->release = 'v1.0-a1';

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="admin/tool/cohortroles/db" VERSION="20151201" COMMENT="XMLDB file for Moodle admin/tool/cohortroles"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+    <TABLES>
+        <TABLE NAME="course_category_backedup"
+                COMMENT="This table helps keep tracking of the courses already backed up in case something fails.">
+            <FIELDS>
+                <FIELD NAME="id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="true"/>
+                <FIELD NAME="category_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The category id from which the course was backed up."/>
+                <FIELD NAME="category_short_name"
+                        TYPE="char"
+                        LENGTH="150"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The short name for the category where the course is/was in when backed up."/>
+                <FIELD NAME="course_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The course id for which this backup was created."/>
+                <FIELD NAME="task_id"
+                        TYPE="char"
+                        LENGTH="15"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The task id associated with this course backup."/>
+                <FIELD NAME="course_short_name"
+                        TYPE="char"
+                        LENGTH="200"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The short name for the course backed up."/>
+                <FIELD NAME="file_path"
+                        TYPE="char"
+                        LENGTH="500"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the name of the backup file which was created by the backup tool."/>
+                <FIELD NAME="processed"
+                        TYPE="int"
+                        LENGTH="1"
+                        NOTNULL="true"
+                        DEFAULT="0"
+                        SEQUENCE="false"
+                        COMMENT="This field indicates if this particular course for this particular task have been processed or not."/>
+                <FIELD NAME="created_date"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="For recording the date and time when this course backup was created."/>
+                <FIELD NAME="backed_up_date"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="false"
+                        SEQUENCE="false"
+                        COMMENT="For recording the date and time when this course backup was exactly executed."/>
+                <FIELD NAME="user_id"
+                        TYPE="int"
+                        LENGTH="500"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the id of the user who create this backup."/>
+                <FIELD NAME="user_fullname"
+                        TYPE="char"
+                        LENGTH="150"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the name of the user who create this backup."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary"
+                        TYPE="primary"
+                        FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="ix_course_id_task_id"
+                        UNIQUE="true"
+                        FIELDS="course_id, task_id"
+                        COMMENT="Index for the course id field to facilitate the search on it."/>
+                <INDEX NAME="ix_category_id"
+                        UNIQUE="false"
+                        FIELDS="category_id"
+                        COMMENT="Helps the search of all tasks and courses associated with a particular category be more quickly."/>
+            </INDEXES>
+        </TABLE>
+
+        <TABLE NAME="course_category_restored"
+                COMMENT="This table supports the process of restored courses for controlling if a particular course has been restored or not.">
+            <FIELDS>
+                <FIELD NAME="id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="true"/>
+                <FIELD NAME="category_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the category id in which this particular course was restored."/>
+                <FIELD NAME="task_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the id of the task where this courses was restored."/>
+                <FIELD NAME="course_restored_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the course id assign to this course when it was restored."/>
+                <FIELD NAME="file_path"
+                        TYPE="char"
+                        LENGTH="500"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the path for the file which was used for restore this course. This is just a reference since the physical file could be deleted without the task knowing about it."/>
+                <FIELD NAME="restored"
+                        TYPE="int"
+                        LENGTH="1"
+                        NOTNULL="true"
+                        DEFAULT="0"
+                        SEQUENCE="false"
+                        COMMENT="This field indicates whether or not this course has already been restored."/>
+                <FIELD NAME="created_date"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the date/time when this course was restored."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary"
+                        TYPE="primary"
+                        FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="ix_course_id_task_id"
+                        UNIQUE="true"
+                        FIELDS="course_restored_id, task_id"
+                        COMMENT="Helps the search of a category and task be quickly."/>
+                <INDEX NAME="ix_category_id"
+                        UNIQUE="false"
+                        FIELDS="category_id"
+                        COMMENT="Helps the search of all tasks and courses associated with a particular category be more quickly."/>
+            </INDEXES>
+        </TABLE>
+
+        <TABLE NAME="course_category_reset"
+                COMMENT="This table supports the task for resetting courses from a specify category.">
+            <FIELDS>
+                <FIELD NAME="id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="true"/>
+                <FIELD NAME="task_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This is the task id related to the reset of a particular course."/>
+                <FIELD NAME="category_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the category id where the course belongs when it was reset."/>
+                <FIELD NAME="course_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the course id reset."/>
+                <FIELD NAME="reset"
+                        TYPE="int"
+                        LENGTH="1"
+                        NOTNULL="true"
+                        DEFAULT="0"
+                        SEQUENCE="false"
+                        COMMENT="This fields indicates whether this course has been reset or not."/>
+                <FIELD NAME="created_date"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This fields holds the date/time where this course was add to a reset specific task."/>
+                <FIELD NAME="reset_date"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the date/time the course was reset."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary"
+                        TYPE="primary"
+                        FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="ix_course_id_task_id"
+                        UNIQUE="true"
+                        FIELDS="course_id, task_id"
+                        COMMENT="Helps the search of a particular course and task quickly."/>
+                <INDEX NAME="ix_category_id"
+                        UNIQUE="false"
+                        FIELDS="category_id"
+                        COMMENT="Helps the search of all tasks and courses associated with a particular category be more quickly."/>
+            </INDEXES>
+        </TABLE>
+    </TABLES>
+</XMLDB>

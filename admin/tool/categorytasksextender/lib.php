@@ -23,9 +23,11 @@
 defined('MOODLE_INTERNAL') || die;
 
 function tool_categorytasksextender_extend_navigation_category_settings(navigation_node $parentnode, context_coursecat $context){
+    global $CFG;
+    
     $categoryid = $context->instanceid;
     if(has_capability('tool/categorytasksextender:backupcategorycourses', $context)){
-        $linktext = get_string('backuplinktext', 
+        $linktext = get_string('link_text_backup', 
                                 'tool_categorytasksextender');
         $link = new moodle_url($CFG->wwwroot.'/admin/tool/categorytasksextender/backup.php',
                                 array('categoryid'=>$categoryid));
@@ -34,20 +36,33 @@ function tool_categorytasksextender_extend_navigation_category_settings(navigati
                                             navigation_node::TYPE_SETTING, 
                                             null, 
                                             null, 
-                                            new pix_icon('i/settings', ''));
+                                            new pix_icon('i/backup', ''));
         $parentnode->add_node($node);
     }
     if(has_capability('tool/categorytasksextender:restorecoursescategory', $context)){
-        $linktext = get_string('restorelinktext', 
+        $linktext = get_string('link_text_restore', 
                                 'tool_categorytasksextender');
-        $link = new moodle_url($CFG->wwwroot.'/admin/tool/categorytasksextender/backup.php',
+        $link = new moodle_url($CFG->wwwroot.'/admin/tool/categorytasksextender/restore.php',
                                 array('categoryid'=>$categoryid));
         $node = navigation_node::create($linktext, 
                                             $link, 
                                             navigation_node::TYPE_SETTING, 
                                             null, 
                                             null, 
-                                            new pix_icon('i/settings', ''));
+                                            new pix_icon('i/restore', ''));
+        $parentnode->add_node($node);
+    }
+    if(has_capability('tool/categorytasksextender:resetcoursescategory', $context)){
+        $linktext = get_string('link_text_reset', 
+                                'tool_categorytasksextender');
+        $link = new moodle_url($CFG->wwwroot.'/admin/tool/categorytasksextender/reset.php',
+                                array('categoryid'=>$categoryid));
+        $node = navigation_node::create($linktext, 
+                                            $link, 
+                                            navigation_node::TYPE_SETTING, 
+                                            null, 
+                                            null, 
+                                            new pix_icon('t/reset', ''));
         $parentnode->add_node($node);
     }
 }

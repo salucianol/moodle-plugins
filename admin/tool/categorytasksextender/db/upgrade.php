@@ -15,16 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
  
 /**
+ * Method for upgrading the plugin.
+ * 
  * @package   tool_categorytasksextender
  * @copyright 2021, Samuel Luciano <sa.lassis@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
- 
-defined('MOODLE_INTERNAL') || die();
- 
-$plugin->version = 2021052600;
-$plugin->requires = 2018051700;
-$plugin->supported = [35, 311];   // Available as of Moodle 3.9.0 or later.
-$plugin->component = 'tool_categorytasksextender';
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->release = 'v0.1-a1';
+
+function xmldb_tool_categorytasksextender_upgrade($oldversion){
+    global $DB;
+
+    $dbman = $DB->get_manager();
+    
+    $upgrade_dir = __DIR__.'/upgrade_versions/';
+    $upgrade_versions = scandir($upgrade_dir);
+
+    foreach ($upgrade_versions as $upgrade_version) {
+        $upgrade_version_file = $upgrade_dir.$upgrade_version;
+
+        if(is_file($upgrade_version_file) 
+                && strstr($upgrade_version_file, '.php')){
+
+            require_once($upgrade_version_file);
+
+        }
+    }
+
+    return true;
+}
