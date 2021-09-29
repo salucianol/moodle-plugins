@@ -37,11 +37,11 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('admin');
 $PAGE->set_url(new moodle_url('/admin/tool/categorytasksextender/backup.php'));
 $PAGE->set_title(get_string('text_backup_heading', 
-                            'tool_categorytasksextender')
-                    .$category->name);
+                            'tool_categorytasksextender',
+                            $category->name));
 $PAGE->set_heading(get_string('text_backup_heading', 
-                                'tool_categorytasksextender')
-                    .$category->name);
+                                'tool_categorytasksextender',
+                                $category->name));
 
 $mform = 
     new tool_categorytasksextender_backup_form('backup.php', 
@@ -49,6 +49,13 @@ $mform =
 $return_url = 
     new moodle_url('/course/management.php', 
                     array('categoryid' => $categoryid));
+
+if(!\tool_categorytasksextender\helpers\base_helper::is_there_any_courses_in_category($category)){
+    redirect($return_url,
+                get_string('message_error_not_courses_found',
+                            'tool_categorytasksextender',
+                            $category->name));
+}
 
 if($mform->is_cancelled()){
     redirect($return_url);
@@ -64,10 +71,14 @@ if($mform->is_cancelled()){
         'category_folder_creation'  => $form_data->category_folder_creation,
         'apply_recursiveness'       => $form_data->apply_recursiveness,
         'task_id'                   => \tool_categorytasksextender\helpers\backup_helper
-                                            ::generate_unique_task_id()
+                                            ::generate_unique_task_id(),
+        'user_id'               => $USER->id,
+        'user_full_name'        => implode(' ', array($USER->firstname,
+                                                        $USER->lastname))
     ));
 
     $backup_task->set_next_run_time($form_data->run_date_time);
+    $backup_task->set_userid($USER->id);
 
     \core\task\manager::queue_adhoc_task($backup_task,
                                             true);
@@ -78,6 +89,8 @@ if($mform->is_cancelled()){
                             $category->name));
 } else {
     echo $OUTPUT->header();
+    echo $OUTPUT->heading(get_string('text_backup_heading',
+                                        'tool_categorytasksextender'));
 
     $mform->display();
 

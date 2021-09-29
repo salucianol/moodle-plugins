@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
  
 /**
- * Helper class for the backup task.
+ * Helper class for the reset task.
  * 
  * @package   tool_categorytasksextender
  * @copyright 2021, Samuel Luciano <sa.lassis@gmail.com>
@@ -26,12 +26,12 @@ namespace tool_categorytasksextender\helpers;
 
 defined('MOODLE_INTERNAL') || die();
 
-class backup_helper 
+class reset_helper 
     extends \tool_categorytasksextender\helpers\base_helper {
 
-    public static function populate_table($category_id, 
+    public static function populate_table($category_id,
                                             $task_id,
-                                            $apply_recursiveness
+                                            $apply_recursiveness,
                                             $user_id = 2,
                                             $user_full_name = ''){
         global $DB;
@@ -47,27 +47,28 @@ class backup_helper
         // Insert each found course into the backedup control table.
         foreach($course_list_elements as $course_list_element){
             if(!in_array($course_list_element->category, $categories)){
-                $category = 
-                    \core_course_category::get($course_list_element->category);
-                $categories[$category->id] = 
-                    self::replace_accented_vowels(str_ireplace(' ', '', $category->name));
+                $category 
+                    = \core_course_category::get($course_list_element->category);
+                $categories[$category->id] 
+                    = self::replace_accented_vowels(str_ireplace(' ', '', $category->name));
             }
 
-            $course_backup = new \stdClass();
-            $course_backup->category_id = $course_list_element->category;
-            $course_backup->category_short_name = $categories[$course_list_element->category];
-            $course_backup->course_id = $course_list_element->id;
-            $course_backup->task_id = $task_id;
-            $course_backup->course_short_name = $course_list_element->shortname;
-            $course_backup->file_path = '';
-            $course_backup->processed = 0;
-            $course_backup->created_date = time();
-            $course_backup->user_id = $user_id;
-            $course_backup->user_fullname = $user_full_name;
+            $course_reset = new \stdClass();
+            $course_reset->task_id = $task_id;
+            $course_reset->category_id = $course_list_element->category;
+            $course_reset->category_short_name = $categories[$course_list_element->category];
+            $course_reset->course_id = $course_list_element->id;
+            $course_reset->course_short_name = $course_list_element->shortname;
+            $course_reset->reset = 0;
+            $course_reset->created_date = time();
+            $course_reset->user_id = $user_id;
+            $course_reset->user_fullname = $user_full_name;
+            $course_reset->course_start_date = $course_list_element->startdate;
+            $course_reset->course_end_date = $course_list_element->enddate;
 
-            $DB->insert_record('course_category_backedup', 
-                                $course_backup, 
-                                false));
+            $DB->insert_record('course_category_reset', 
+                                $course_reset, 
+                                false);
         }
     }
 

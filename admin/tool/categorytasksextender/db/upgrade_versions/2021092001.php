@@ -22,7 +22,7 @@ if($oldversion < 2021092001){
         $dbman->change_field_type($table, 
                                     $field_task_id);
         $dbman->add_index($table,
-                                    $index_ix_course_id_task_id);
+                            $index_ix_course_id_task_id);
     }
 
     // Categorytasksextender savepoint reached.

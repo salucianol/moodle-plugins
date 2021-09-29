@@ -41,9 +41,11 @@ class tool_categorytasksextender_backup_task
         // Check if control table has been populated for this task
         if($DB->count_records('course_category_backedup',
                                 array('task_id' => $data->task_id)) < 1){
-            \tool_categorytasksextender\helpers\backup_helper::populate_backup_table($data->category_id,
-                                                                                        $data->task_id,
-                                                                                        $data->apply_recursiveness);
+            \tool_categorytasksextender\helpers\backup_helper::populate_table($data->category_id,
+                                                                                $data->task_id,
+                                                                                $data->apply_recursiveness,
+                                                                                $data->user_id,
+                                                                                $data->user_full_name);
         }
 
         // Get all the courses to backup from categories
@@ -119,10 +121,10 @@ class tool_categorytasksextender_backup_task
 
                 $courses_processed_count++;
                 $courses_processed_percentage 
-                    = round(($courses_processed_count / $courses_count) * 100, 2)
+                    = round(($courses_processed_count / $courses_count) * 100, 2);
 
                 mtrace("Task Backups from Category: {$course->course_short_name} backed up in {$backup_file_name}.");
-                mtrace("Task Backups from Category: {$courses_processed_count} processed out of {$courses_count} ({$courses_processed_percentage }%).");
+                mtrace("Task Backups from Category: {$courses_processed_count} processed out of {$courses_count} ({$courses_processed_percentage}%).");
                 
                 $DB->update_record('course_category_backedup',
                                     array('id'                  => $course->id,

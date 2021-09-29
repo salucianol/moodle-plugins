@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="admin/tool/cohortroles/db" VERSION="20151201" COMMENT="XMLDB file for Moodle admin/tool/cohortroles"
+<XMLDB PATH="admin/tool/categorytasksextender/db" VERSION="20151201" COMMENT="XMLDB file for Moodle admin/tool/categorytasksextender"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
@@ -69,7 +69,7 @@
                         COMMENT="For recording the date and time when this course backup was exactly executed."/>
                 <FIELD NAME="user_id"
                         TYPE="int"
-                        LENGTH="500"
+                        LENGTH="20"
                         NOTNULL="true"
                         SEQUENCE="false"
                         COMMENT="This field holds the id of the user who create this backup."/>
@@ -112,8 +112,8 @@
                         SEQUENCE="false"
                         COMMENT="This field holds the category id in which this particular course was restored."/>
                 <FIELD NAME="task_id"
-                        TYPE="int"
-                        LENGTH="10"
+                        TYPE="char"
+                        LENGTH="15"
                         NOTNULL="true"
                         SEQUENCE="false"
                         COMMENT="This field holds the id of the task where this courses was restored."/>
@@ -169,8 +169,8 @@
                         NOTNULL="true"
                         SEQUENCE="true"/>
                 <FIELD NAME="task_id"
-                        TYPE="int"
-                        LENGTH="10"
+                        TYPE="char"
+                        LENGTH="15"
                         NOTNULL="true"
                         SEQUENCE="false"
                         COMMENT="This is the task id related to the reset of a particular course."/>
@@ -180,12 +180,36 @@
                         NOTNULL="true"
                         SEQUENCE="false"
                         COMMENT="This field holds the category id where the course belongs when it was reset."/>
+                <FIELD NAME="category_short_name"
+                        TYPE="char"
+                        LENGTH="150"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The short name for the category where the course is/was in when reset occurred."/>
                 <FIELD NAME="course_id"
                         TYPE="int"
                         LENGTH="10"
                         NOTNULL="true"
                         SEQUENCE="false"
                         COMMENT="This field holds the course id reset."/>
+                <FIELD NAME="course_short_name"
+                        TYPE="char"
+                        LENGTH="200"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The short name for the course being reset."/>
+                <FIELD NAME="course_start_date"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This fields holds the date/time where this course starts."/>
+                <FIELD NAME="course_end_date"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the date/time this course ends."/>
                 <FIELD NAME="reset"
                         TYPE="int"
                         LENGTH="1"
@@ -202,9 +226,21 @@
                 <FIELD NAME="reset_date"
                         TYPE="int"
                         LENGTH="20"
-                        NOTNULL="true"
+                        NOTNULL="false"
                         SEQUENCE="false"
                         COMMENT="This field holds the date/time the course was reset."/>
+                <FIELD NAME="user_id"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the id of the user who create this reset process."/>
+                <FIELD NAME="user_fullname"
+                        TYPE="char"
+                        LENGTH="150"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the name of the user who create this reset process."/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary"

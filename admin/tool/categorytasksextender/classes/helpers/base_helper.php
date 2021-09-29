@@ -26,7 +26,7 @@ namespace tool_categorytasksextender\helpers;
 
 defined('MOODLE_INTERNAL') || die();
 
-class base_helper {
+abstract class base_helper {
     /**
      * Returns the $text without any accented vowel.
      */
@@ -45,6 +45,34 @@ class base_helper {
         return strtr($text, $accented_vowels);
     }
     
+    /**
+     * Get a category by its id.
+     */
+    protected static function get_category_by_id($category_id){
+        // Get the category by ID
+        return \core_course_category::get($category_id);
+    }
+
+    /**
+     * Search for all the courses within a category whether recursive or not.
+     */
+    protected static function get_courses_by_category($category, $apply_recursiveness){
+        // Get all the courses for this category $category
+        return $category->get_courses(array('recursive' => $apply_recursiveness));
+    }
+
+    /**
+     * Check whether a category and its subcategories has courses in it.
+     */
+    public static function is_there_any_courses_in_category($category){
+        $course_count = 
+            count(self::get_courses_by_category($category, true));
+        if($course_count < 1){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Returns the $path given with an end slash in case it does not have one.
      */
@@ -65,4 +93,13 @@ class base_helper {
                         10)
                     );
     }
+
+    /**
+     * Abstract method for be implemented in inherited classes for populating the data to database.
+     */
+    abstract public static function populate_table($category_id,
+                                                        $task_id,
+                                                        $apply_recursiveness,
+                                                        $user_id = 2,
+                                                        $user_full_name = '');
 }
