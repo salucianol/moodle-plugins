@@ -72,6 +72,8 @@ if($mform->is_cancelled()){
         'user_id'                   => $USER->id,
         'user_full_name'            => implode(' ', array($USER->firstname,
                                                         $USER->lastname)),
+        'reset_start_date'          => $form_data->reset_start_date,
+        'reset_end_date'            => $form_data->reset_end_date,
         'reset_events'              => $form_data->reset_events,
         'reset_notes'               => $form_data->reset_notes,
         'reset_comments'            => $form_data->reset_comments,
