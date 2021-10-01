@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__.'/../../../../config.php');
-require_once(__DIR__.'/../../../../backup/util/includes/backup_includes.php');
+require_once(__DIR__.'/../../../../backup/util/includes/restore_includes.php');
 
 class tool_categorytasksextender_backup_task 
     extends \core\task\adhoc_task {

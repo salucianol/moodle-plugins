@@ -24,28 +24,66 @@
 
 require_once(__DIR__.'/../../../config.php');
 
-$category = required_param('categoryid', PARAM_INT);
-$context = \context_coursecat::instance($category);
+$categoryid = required_param('categoryid', PARAM_INT);
+$category = \core_course_category::get($categoryid);
+$context = \context_coursecat::instance($categoryid);
 
 // Check for required permissions
 require_login(0, null);
-require_capability('tool/categorytasksextender:backupcategorycourses', $context);
+require_capability('tool/categorytasksextender:restorecoursescategory', $context);
 
-$mform = new tool_categorytasksextender_backup_form('backup.php', array('categoryid' => $category));
+
+$PAGE->set_context($context);
+$PAGE->set_pagelayout('admin');
+$PAGE->set_url(new moodle_url('/admin/tool/categorytasksextender/restore.php'));
+$PAGE->set_title(get_string('text_restore_heading', 
+                            'tool_categorytasksextender',
+                            $category->name));
+$PAGE->set_heading(get_string('text_restore_heading', 
+                                'tool_categorytasksextender',
+                                $category->name));
+
+$mform = 
+    new tool_categorytasksextender_restore_form('restore.php',
+                                                    array('categoryid' => $categoryid));
+
 $form_data = $mform->get_data();
-print_r($form_data);
-$return_url = new moodle_url('/course/management.php', array('categoryid' => $category));
+$return_url = 
+    new moodle_url('/course/management.php', array('categoryid' => $categoryid));
 
 if($mform->is_cancelled()){
     redirect($return_url);
 } else if($form_data){
-    redirect($return_url);
-} else {
-    $PAGE->set_title($SITE->fullname);
-    $PAGE->set_heading(get_string('backup_heading'));
+    $restore_task = 
+        new tool_categorytasksextender_restore_task();
+    
+    $restore_task->set_custom_data(array(
+        'category_id'               => $category->id,
+        'category_name'             => $category->name,
+        'restore_files_path'        => $form_data->restore_files_path,
+        'apply_recursiveness'       => $form_data->apply_recursiveness,
+        'task_id'                   => \tool_categorytasksextender\helpers\restore_helper
+                                            ::generate_unique_task_id(),
+        'user_id'               => $USER->id,
+        'user_full_name'        => implode(' ', array($USER->firstname,
+                                                        $USER->lastname))
+    ));
 
+    $restore_task->set_next_run_time($form_data->run_date_time);
+    $restore_task->set_userid($USER->id);
+
+    \core\task\manager::queue_adhoc_task($restore_task,
+                                            true);
+
+    redirect($return_url,
+                get_string('message_info_restore_task_queue',
+                            'tool_categorytasksextender',
+                            $category->name));
+} else {
     echo $OUTPUT->header();
-    echo $OUTPUT->heading(get_string('backup_heading').print_r($form_data, true));
+    echo $OUTPUT->heading(get_string('text_restore_heading',
+                                        'tool_categorytasksextender',
+                                        $category->name));
 
     $mform->display();
 

@@ -50,7 +50,7 @@ $return_url =
     new moodle_url('/course/management.php', 
                     array('categoryid' => $categoryid));
 
-if(!\tool_categorytasksextender\helpers\base_helper::is_there_any_courses_in_category($category)){
+if(!\tool_categorytasksextender\helpers\backup_helper::is_there_any_courses_in_category($category)){
     redirect($return_url,
                 get_string('message_error_not_courses_found',
                             'tool_categorytasksextender',

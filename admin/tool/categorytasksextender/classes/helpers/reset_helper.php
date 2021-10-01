@@ -27,7 +27,7 @@ namespace tool_categorytasksextender\helpers;
 defined('MOODLE_INTERNAL') || die();
 
 class reset_helper 
-    extends \tool_categorytasksextender\helpers\base_helper {
+    extends \tool_categorytasksextender\helpers\base_category_helper {
 
     public static function populate_table($category_id,
                                             $task_id,

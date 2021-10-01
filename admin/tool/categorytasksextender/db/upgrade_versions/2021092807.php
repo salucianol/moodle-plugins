@@ -1,4 +1,3 @@
-
 <?php
 if($oldversion < 2021092807){
     // Define table course_category_reset to be created.
