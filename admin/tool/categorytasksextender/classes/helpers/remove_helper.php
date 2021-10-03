@@ -26,7 +26,7 @@ namespace tool_categorytasksextender\helpers;
 
 defined('MOODLE_INTERNAL') || die();
 
-class backup_helper 
+class remove_helper 
     extends \tool_categorytasksextender\helpers\base_category_helper {
 
     public static function populate_table($category_id, 
@@ -53,20 +53,19 @@ class backup_helper
                     self::replace_accented_vowels(str_ireplace(' ', '', $category->name));
             }
 
-            $course_backup = new \stdClass();
-            $course_backup->category_id = $course_list_element->category;
-            $course_backup->category_short_name = $categories[$course_list_element->category];
-            $course_backup->course_id = $course_list_element->id;
-            $course_backup->task_id = $task_id;
-            $course_backup->course_short_name = $course_list_element->shortname;
-            $course_backup->file_path = '';
-            $course_backup->processed = 0;
-            $course_backup->created_date = time();
-            $course_backup->user_id = $user_id;
-            $course_backup->user_fullname = $user_full_name;
+            $course_remove = new \stdClass();
+            $course_remove->category_id = $course_list_element->category;
+            $course_remove->category_short_name = $categories[$course_list_element->category];
+            $course_remove->task_id = $task_id;
+            $course_remove->course_id = $course_list_element->id;
+            $course_remove->course_short_name = $course_list_element->shortname;
+            $course_remove->removed = 0;
+            $course_remove->created_date = time();
+            $course_remove->user_id = $user_id;
+            $course_remove->user_fullname = $user_full_name;
 
-            $DB->insert_record('course_category_backedup', 
-                                $course_backup, 
+            $DB->insert_record('course_category_removed', 
+                                $course_remove, 
                                 false);
         }
     }

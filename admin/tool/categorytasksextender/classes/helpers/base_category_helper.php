@@ -76,18 +76,6 @@ abstract class base_category_helper
     }
 
     /**
-     * Check whether a category and its subcategories has courses in it.
-     */
-    public static function is_there_any_courses_in_category($category){
-        $course_count = 
-            count(self::get_courses_by_category($category, true));
-        if($course_count < 1){
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Returns the $path given with an end slash in case it does not have one.
      */
     public static function add_end_slash_for_path($path){

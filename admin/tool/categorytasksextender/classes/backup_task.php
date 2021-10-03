@@ -120,8 +120,8 @@ class tool_categorytasksextender_backup_task
                 $backup_file->copy_content_to($backup_file_name);
 
                 $courses_processed_count++;
-                $courses_processed_percentage 
-                    = round(($courses_processed_count / $courses_count) * 100, 2);
+                $courses_processed_percentage = 
+                    round(($courses_processed_count / $courses_count) * 100, 2);
 
                 mtrace("Task Backups from Category: {$course->course_short_name} backed up in {$backup_file_name}.");
                 mtrace("Task Backups from Category: {$courses_processed_count} processed out of {$courses_count} ({$courses_processed_percentage}%).");

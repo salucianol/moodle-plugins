@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
  
 /**
- * Restore confirmation form class.
+ * Backup confirmation form class.
  * 
  * @package   tool_categorytasksextender
  * @copyright 2021, Samuel Luciano <sa.lassis@gmail.com>
@@ -25,32 +25,19 @@
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/formslib.php');
 
-class tool_categorytasksextender_restore_form extends moodleform {
+class tool_categorytasksextender_remove_form 
+    extends moodleform {
+    
     public function definition(){
         $mform = $this->_form;
 
         $categoryid = $this->_customdata['categoryid'];
-        
+
         // Add a header element for grouping the options of the task
         $mform->addElement('header',
                             'header_task_settings',
                             get_string('header_task_settings', 'tool_categorytasksextender'));
         $mform->setExpanded('header_task_settings');
-
-        // Add element for capturing the path for saving backups.
-        $mform->addElement('text', 
-                            'restore_files_path', 
-                            get_string('field_text_restore_files_path', 
-                                        'tool_categorytasksextender'),
-                            array('size' => '80'));
-        $mform->setType('restore_files_path', 
-                            PARAM_PATH);
-        $mform->setDefault('restore_files_path', 
-                            get_string('default_value_restore_files_path', 
-                                        'tool_categorytasksextender'));
-        $mform->addHelpButton('restore_files_path', 
-                                'field_text_restore_files_path', 
-                                'tool_categorytasksextender');
 
         // Add element for specifying whether to be recursive or none while searching for categories for courses backups
         $mform->addElement('advcheckbox',
@@ -91,32 +78,7 @@ class tool_categorytasksextender_restore_form extends moodleform {
     }
 
     function validation($data, $files){
-        // TODO: Validate the path for preventing the use of certain folders according to the OS
         $errors = parent::validation($data, $files);
-        $is_there_any_error = count($errors) > 0;
-
-        $file_exists = file_exists($data['restore_files_path']);
-        $is_readable = is_readable($data['restore_files_path']);
-
-        if(!$is_there_any_error && !$file_exists){
-            $errors['restore_files_path'] = get_string('error_message_restore_files_path_not_exist',
-                                                        'tool_categorytasksextender',
-                                                        $data['restore_files_path']);
-            $is_there_any_error = true;
-        }
-        if(!$is_there_any_error && !$is_readable){
-            $errors['restore_files_path'] = get_string('error_message_restore_files_path_not_readable',
-                                                        'tool_categorytasksextender',
-                                                        $data['restore_files_path']);
-            $is_there_any_error = true;
-        }
-        if(!$is_there_any_error && \tool_categorytasksextender\helpers\restore_helper::is_directory_empty($data['restore_files_path'])){
-            $errors['restore_files_path'] = get_string('error_message_restore_files_path_is_empty',
-                                                        'tool_categorytasksextender',
-                                                        $data['restore_files_path']);
-            $is_there_any_error = true;
-        }
-
         return $errors;
     }
 }

@@ -65,4 +65,17 @@ function tool_categorytasksextender_extend_navigation_category_settings(navigati
                                             new pix_icon('t/reset', ''));
         $parentnode->add_node($node);
     }
+    if(has_capability('tool/categorytasksextender:removecoursescategory', $context)){
+        $linktext = get_string('link_text_remove', 
+                                'tool_categorytasksextender');
+        $link = new moodle_url($CFG->wwwroot.'/admin/tool/categorytasksextender/remove.php',
+                                array('categoryid'=>$categoryid));
+        $node = navigation_node::create($linktext, 
+                                            $link, 
+                                            navigation_node::TYPE_SETTING, 
+                                            null, 
+                                            null, 
+                                            new pix_icon('i/trash', ''));
+        $parentnode->add_node($node);
+    }
 }

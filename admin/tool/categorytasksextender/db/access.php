@@ -47,4 +47,12 @@ $capabilities = [
             'manager' => CAP_ALLOW,
         ],
     ],
+    'tool/categorytasksextender:removecoursescategory' => [
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
  ];
