@@ -69,7 +69,7 @@ class tool_categorytasksextender_remove_task
             $courses_processed_count = 0;
 
             $lock_factory = 
-                \core\lock\lock_config::get_lock_factory('tool_categorytasksextender_remove_task');
+                \core\lock\lock_config::get_lock_factory('tool_categorytasksextender');
 
             // Read previous loaded list of courses
             //      remove the course from the category
@@ -89,21 +89,26 @@ class tool_categorytasksextender_remove_task
                  * This plugin can be found in the Moodle plugins directory in the following link:
                  * https://moodle.org/plugins/tool_deletecourses.
                  */
-                $lock_key = "course{$course->course_id}";
-                $lock = $lock_factory->get_lock($lock_key, 0);
-
+                $lock_key = "course:{$course->course_id}";
                 $course_removed = true;
 
-                // Guard against multiple workers in cron.
-                if ($lock !== false) {
+                if ($lock = $lock_factory->get_lock($lock_key, 0, 600)) {
                     $course_record = 
                         $DB->get_record('course', array('id' => $course->course_id));
                     if ($course_record) {
-                        if (!delete_course($course_record, true)) {
-                            mtrace("Task Remove from Category: Failed to remove course {$course->course_short_name} from category {$course->category_short_name}");
+                        try{
+                            if (!delete_course($course_record, true)) {
+                                mtrace("Task Remove from Category: Failed to remove course {$course->course_short_name} from category {$course->category_short_name}");
+                                $course_removed = false;
+                            }
+                        } catch(\Exception $e){
+                            mtrace("Task Remove from Category: Exception caught in file {$e->getFile()} at {$e->getLine()} with message {$e->getMessage()}"
+                                    .PHP_EOL
+                                    ."Stacktrace: {$e->getTraceAsString()}");
                             $course_removed = false;
                         }
                     }
+
                     $lock->release();
                 }
 
@@ -124,6 +129,10 @@ class tool_categorytasksextender_remove_task
         }
 
         fix_course_sortorder();
+
+        if($courses_processed_count < $courses_count){
+            mtrace("Task Remove from Category: {$course_processed_count} failed to be removed.");
+        }
 
         mtrace("Task Remove from Category: {$data->category_name} has finished.");
     }
