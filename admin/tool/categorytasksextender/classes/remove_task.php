@@ -131,7 +131,7 @@ class tool_categorytasksextender_remove_task
         fix_course_sortorder();
 
         if($courses_processed_count < $courses_count){
-            mtrace("Task Remove from Category: {$course_processed_count} failed to be removed.");
+            mtrace("Task Remove from Category: {$courses_processed_count} failed to be removed.");
         }
 
         mtrace("Task Remove from Category: {$data->category_name} has finished.");

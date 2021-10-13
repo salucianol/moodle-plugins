@@ -30,6 +30,7 @@ $string['link_text_remove'] = 'Remove courses from';
 $string['categorytasksextender:backupcategorycourses'] = 'Create courses backups from category';
 $string['categorytasksextender:restorecoursescategory'] = 'Restore courses backups into category';
 $string['categorytasksextender:resetcoursescategory'] = 'Reset all courses in category';
+$string['tool/categorytasksextender:removecoursescategory'] = 'Remove all courses in category';
 $string['text_backup_heading'] = 'Backup all courses from: <strong>{$a}</strong>';
 $string['text_reset_heading'] = 'Reset all courses from: <strong>{$a}</strong>';
 $string['text_restore_heading'] = 'Restore all courses to: <strong>{$a}</strong>';

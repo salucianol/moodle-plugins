@@ -13,18 +13,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+ 
 /**
- * @package    profilefield_textwithregex
- * @category   profilefield
- * @copyright  2012 Rajesh Taneja
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   tool_bulkmodifycoursesinfo
+ * @copyright 2021, Samuel Luciano <sa.lassis@gmail.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2021100804;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2019111801;        // Requires this Moodle version
-$plugin->component = 'profilefield_cedula'; // Full name of the plugin (used for diagnostics)
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release= '1.2.0';
+if($hassiteconfig){
+    $ADMIN->add('tools', 
+                    new admin_externalpage('bulkmodifycoursesinfo', 
+                                                new lang_string('pluginname', 
+                                                                    'tool_bulkmodifycoursesinfo'),
+                    $CFG->wwwroot.'/'.$CFG->admin.'/tool/bulkmodifycoursesinfo/bulk_modify_courses.php'));
+}

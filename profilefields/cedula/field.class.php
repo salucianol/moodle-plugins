@@ -96,9 +96,11 @@ class profile_field_cedula extends profile_field_base {
             default:
                 $errors[$this->inputname] = get_string('format_error_unknown', 'profilefield_cedula');
         }
+        
         if($this->check_exists_cedula($cedula)){
             $errors[$this->inputname] = get_string('duplicated_value', 'profilefield_cedula');
         }
+
         return $errors;
     }
 
@@ -165,9 +167,28 @@ class profile_field_cedula extends profile_field_base {
      * @return bool     true means there is a record with the same cedula, false there is not.
      */
     private function check_exists_cedula($cedula){
-        global $DB;
+        global $DB, $USER;
 
-        return $DB->record_exists('user_info_data', array('data' => $cedula));
+        $cedula_exists = true;
+
+        $records = $DB->get_records_sql('SELECT userid '
+                                                .'FROM {user_info_data} '
+                                                .'WHERE '.$DB->sql_compare_text('data').' = '
+                                                .$DB->sql_compare_text(':data'), 
+                                            array('data' => $cedula));
+        
+        if($records){
+            foreach($records as $record){
+                if($record->userid == $USER->id){
+                    $cedula_exists = false;
+                    break;
+                }
+            }
+        } else {
+            $cedula_exists = false;
+        }
+        
+        return $cedula_exists;
     }
 }
 

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="admin/tool/bulkmodifycoursesinfo/db" VERSION="20151201" COMMENT="XMLDB file for Moodle admin/tool/bulkmodifycoursesinfo"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+    <TABLES>
+        <TABLE NAME="course_renamed"
+                COMMENT="This table helps keep tracking of the courses already backed up in case something fails.">
+            <FIELDS>
+                <FIELD NAME="id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="true"/>
+                <FIELD NAME="task_id"
+                        TYPE="char"
+                        LENGTH="15"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The task id associated with this course renamed process."/>
+                <FIELD NAME="course_id"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="false"
+                        SEQUENCE="false"
+                        COMMENT="The current Course Id that this particular course has." />
+                <FIELD NAME="course_id_number"
+                        TYPE="char"
+                        LENGTH="100"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The current Course IdNumber that this particular course has."/>
+                <FIELD NAME="new_course_id_number"
+                        TYPE="char"
+                        LENGTH="100"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The Course IdNumber that must be set for this particular course."/>
+                <FIELD NAME="new_course_short_name"
+                        TYPE="char"
+                        LENGTH="255"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The new Course Short Name that must be set for this particular course."/>
+                <FIELD NAME="new_course_start_date"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The new Course Start Date that must be set for this particular course."/>
+                <FIELD NAME="new_course_end_date"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The new Course End Date that must be set for this particular course."/>
+                <FIELD NAME="renamed"
+                        TYPE="int"
+                        LENGTH="1"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="Indicate whether this course has been renamed or not."
+                        DEFAULT="0" />
+                <FIELD NAME="user_id"
+                        TYPE="int"
+                        LENGTH="20"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the id of the user who start this courses info modification."/>
+                <FIELD NAME="user_fullname"
+                        TYPE="char"
+                        LENGTH="150"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="This field holds the name of the user who start this courses info modification."/>
+                <FIELD NAME="created_date"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="true"
+                        SEQUENCE="false"
+                        COMMENT="The date when this course was set to be renamed."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary"
+                        TYPE="primary"
+                        FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="course_renamed_ux_course_id"
+                        UNIQUE="true"
+                        FIELDS="course_id,task_id"
+                        COMMENT="Index for the course id and task id fields to guarantee its uniqueness."/>
+            </INDEXES>
+        </TABLE>
+    </TABLES>
+</XMLDB>

@@ -26,6 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__.'/../../../../config.php');
 require_once(__DIR__.'/../../../../backup/util/includes/backup_includes.php');
+require_once(__DIR__.'/../../../../backup/util/includes/restore_includes.php');
 
 class tool_categorytasksextender_restore_task 
     extends \core\task\adhoc_task {
@@ -86,9 +87,7 @@ class tool_categorytasksextender_restore_task
                                                                 backup::INTERACTIVE_NO,
                                                                 backup::MODE_GENERAL,
                                                                 $file->user_id,
-                                                                backup::TARGET_NEW_COURSE,
-                                                                null,
-                                                                backup::RELEASESESSION_YES);
+                                                                backup::TARGET_NEW_COURSE);
 
                 $restore_controller->execute_precheck();
                 $restore_controller->execute_plan();
