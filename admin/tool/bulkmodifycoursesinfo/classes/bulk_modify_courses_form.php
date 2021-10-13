@@ -84,7 +84,8 @@ class tool_bulkmodifycoursesinfo_bulk_modify_courses_form extends moodleform {
             'course_new_end_date'
         );
         $csv_optional_fields = array(
-            'course_id'
+            'course_id',
+            'course_new_category'
         );
 
         $errors = parent::validation($data, $files);

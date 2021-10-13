@@ -54,6 +54,12 @@
                         NOTNULL="true"
                         SEQUENCE="false"
                         COMMENT="The new Course End Date that must be set for this particular course."/>
+                <FIELD NAME="new_course_category"
+                        TYPE="int"
+                        LENGTH="10"
+                        NOTNULL="false"
+                        SEQUENCE="false"
+                        COMMENT="The new Course Category that must be set for this particular course."/>
                 <FIELD NAME="renamed"
                         TYPE="int"
                         LENGTH="1"

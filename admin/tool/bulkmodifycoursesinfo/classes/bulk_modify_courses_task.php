@@ -22,7 +22,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 defined('MOODLE_INTERNAL') || die();
+require_once($CFG->libdir.'/moodlelib.php');
 
 class tool_bulkmodifycoursesinfo_bulk_modify_courses_task
     extends \core\task\adhoc_task {
@@ -54,6 +56,8 @@ class tool_bulkmodifycoursesinfo_bulk_modify_courses_task
             $courses_modifications_count = count($courses_modifications);
 
             mtrace("Renaming Courses Task: Found {$courses_modifications_count} for renaming.");
+            
+            $valid_categories = array();
 
             foreach($courses_modifications as $course_modification){
                 $course_id = $course_modification->course_id;
@@ -83,7 +87,17 @@ class tool_bulkmodifycoursesinfo_bulk_modify_courses_task
                 $course->idnumber = $course_modification->new_course_id_number;
                 $course->startdate = $course_modification->new_course_start_date;
                 $course->enddate = $course_modification->new_course_end_date;
-                
+
+                $is_course_category_valid = $course_modification->new_course_category > 0
+                                                &&  (in_array($course_modification->new_course_category, $valid_categories)
+                                                        || $DB->record_exists('course_categories',
+                                                                                array('id' => $course_modification->new_course_category)));
+
+                if($is_course_category_valid){
+                    $course->category = $course_modification->new_course_category;
+                    array_push($valid_categories, $course_modification->new_course_category);
+                }
+
                 mtrace("Renaming Courses Task: Updating course id {$course_id} with Id Number {$course_modification->course_id_number} to {$course_modification->new_course_id_number}.");
 
                 $DB->update_record('course',
@@ -97,6 +111,10 @@ class tool_bulkmodifycoursesinfo_bulk_modify_courses_task
                                     ),
                                     false);
             }
+
+            mtrace('Renaming Courses Task: Purging all caches to force regenerating.');
+
+            purge_all_caches();
 
             mtrace('Renaming Courses Task: Process Finished.');
         }
@@ -149,7 +167,11 @@ class tool_bulkmodifycoursesinfo_bulk_modify_courses_task
             $course_modification = new \stdClass();
 
             if(count($course_modification_line) >= 6){
-                $course_modification->course_id = intval($course_modification_line[5]);
+                $course_modification->new_course_category = intval($course_modification_line[5]);
+            }
+
+            if(count($course_modification_line) >= 7){
+                $course_modification->course_id = intval($course_modification_line[6]);
             }
 
             $course_modification->course_id_number = $course_modification_line[0];
