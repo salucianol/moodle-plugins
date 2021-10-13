@@ -1,0 +1,3 @@
+*.zip
+*.csv
+!**/courses_modifications_example.csv

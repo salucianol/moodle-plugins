@@ -13,18 +13,29 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+ 
 /**
- * @package    profilefield_textwithregex
- * @category   profilefield
- * @copyright  2012 Rajesh Taneja
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Base helper class for sharing functions between helpers.
+ * 
+ * @package   tool_bulkmodifycoursesinfo
+ * @copyright 2021, Samuel Luciano <sa.lassis@gmail.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace tool_bulkmodifycoursesinfo\helpers;
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021100804;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2019111801;        // Requires this Moodle version
-$plugin->component = 'profilefield_cedula'; // Full name of the plugin (used for diagnostics)
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release= '1.2.0';
+abstract class base_helper {
+    /**
+     * Generate a unique task id.
+     */
+    public static function generate_unique_task_id(){
+        return strtolower(
+                    substr(
+                        md5(date('YmdHis').random_int(PHP_INT_MIN, PHP_INT_MAX)), 
+                        1, 
+                        10)
+                    );
+    }
+}

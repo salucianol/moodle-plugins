@@ -13,18 +13,18 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+ 
 /**
- * @package    profilefield_textwithregex
- * @category   profilefield
- * @copyright  2012 Rajesh Taneja
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   tool_categorytasksextender
+ * @copyright 2021, Samuel Luciano <sa.lassis@gmail.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+ 
 defined('MOODLE_INTERNAL') || die();
-
-$plugin->version   = 2021100804;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2019111801;        // Requires this Moodle version
-$plugin->component = 'profilefield_cedula'; // Full name of the plugin (used for diagnostics)
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release= '1.2.0';
+ 
+$plugin->version = 2021100701;
+$plugin->requires = 2018051700;
+$plugin->supported = [35, 311];   // Available as of Moodle 3.5.0 or later.
+$plugin->component = 'tool_categorytasksextender';
+$plugin->maturity = MATURITY_ALPHA;
+$plugin->release = 'v1.3-a1';
