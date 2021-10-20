@@ -34,7 +34,7 @@ abstract class base_category_helper
      */
     public static function is_there_any_courses_in_category($category){
         $course_count = 
-            count(self::get_courses_by_category($category, true));
+            count(self::get_courses_by_category($category, false));
         if($course_count < 1){
             return false;
         }
