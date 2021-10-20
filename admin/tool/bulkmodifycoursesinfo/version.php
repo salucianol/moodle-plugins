@@ -22,7 +22,7 @@
  
 defined('MOODLE_INTERNAL') || die();
  
-$plugin->version = 2021101301;
+$plugin->version = 2021102001;
 $plugin->requires = 2018051700;
 $plugin->supported = [35, 311];   // Available as of Moodle 3.5.0 or later.
 $plugin->component = 'tool_bulkmodifycoursesinfo';
