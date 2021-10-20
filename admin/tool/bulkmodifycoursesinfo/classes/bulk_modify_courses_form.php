@@ -55,6 +55,22 @@ class tool_bulkmodifycoursesinfo_bulk_modify_courses_form extends moodleform {
                                 'field_text_courses_modifications_file', 
                                 'tool_bulkmodifycoursesinfo');
 
+        $courses_modifications_file_url = 
+            new moodle_url('courses_modifications_example.csv');
+        
+        $courses_modifications_file_link = 
+            html_writer::link($courses_modifications_file_url, 'courses_modifications_example.csv');
+
+        $mform->addElement('static', 
+                                'courses_modifications_file_sample', 
+                                get_string('field_text_example_file_download', 
+                                            'tool_bulkmodifycoursesinfo',
+                                            'courses_modifications_example.csv'),
+                                $courses_modifications_file_link);
+        $mform->addHelpButton('courses_modifications_file_sample', 
+                                'field_text_example_file_download', 
+                                'tool_bulkmodifycoursesinfo');
+
         // Add an element for selecting (optionally) the date and time to run this task
         $mform->addElement('date_time_selector', 
                             'run_date_time', 
